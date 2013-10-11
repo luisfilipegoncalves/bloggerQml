@@ -5,7 +5,8 @@ Rectangle {
     id: root
     width: 1440
     height: 900
-    color: "black"
+    color: "#235E5A"
+
 
     ListView {
         id: listV
@@ -21,7 +22,7 @@ Rectangle {
         delegate: Rectangle {
             id: del
             smooth: true
-            color: "#1e1e1e"
+            color: "#0B8A81"
 
             width: listV.width
             height: 100
@@ -45,7 +46,7 @@ Rectangle {
 
             Row {
                 anchors.left: txed.right
-                anchors.leftMargin: 20
+                anchors.leftMargin: 30
                 anchors.verticalCenter: txed.verticalCenter
                 Repeater {
                     model: rating
@@ -56,7 +57,7 @@ Rectangle {
             Row {
                 id: starRow
                 anchors.left: txed.right
-                anchors.leftMargin: 20
+                anchors.leftMargin: 30
                 anchors.verticalCenter: txed.verticalCenter
 
                 StarButton {
@@ -79,27 +80,40 @@ Rectangle {
 
             Text {
                 id: date
-                anchors.right: textNextDate.left
-                anchors.rightMargin: 20
+                anchors.left: starRow.right
+                anchors.leftMargin:  30
                 anchors.verticalCenter: txed.verticalCenter
 
                 text: "Última: " + lastdate
                 font.pixelSize: 14
-                font.bold: false
-                color: "gray"
+                font.bold: true
+                color: "white"
             }
 
             Text {
                 id: textNextDate
-                anchors.right: parent.right
-                anchors.rightMargin: 20
+                anchors.left: date.right
+                anchors.leftMargin: 30
                 anchors.verticalCenter: txed.verticalCenter
 
                 text: "Próxima: " + nextdate
                 font.pixelSize: 14
-                font.bold: false
-                color: "gray"
+                font.bold: true
+                color: "white"
             }
+
+            TextInput {
+                id: txtNote
+                anchors.left: date.left
+                anchors.leftMargin: 20
+                anchors.top: date.bottom
+                anchors.topMargin: 20
+                text: "Notas: Este blog é marado!"
+                color: "black"
+                font.pixelSize: 12
+                font.bold: false
+            }
+
 
             TextInput {
                 id: txtUrl
@@ -108,7 +122,7 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 20
                 text: url
-                color: "gray"
+                color: "black"
                 font.pixelSize: 12
                 font.bold: false
                 onTextChanged: {
@@ -124,7 +138,7 @@ Rectangle {
         id: menuRect
         height: 80
         width: parent.width
-        color: "#1e1e1e"
+        color: "#024D47"
         anchors.top: parent.top
         opacity: 0.6
 

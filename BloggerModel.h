@@ -1,21 +1,48 @@
-#include <QtGui/QGuiApplication>
-#include "qtquick2applicationviewer.h"
+#ifndef BLOGGERMODEL_H
+#define BLOGGERMODEL_H
 
-#include "BloggerModel.h"
-#include <QQmlContext>
+#include <QSortFilterProxyModel>
+#include <QStandardItemModel>
+#include <QStandardItem>
+#include <QDate>
 
-int main(int argc, char *argv[])
+class BlogModel : public QStandardItemModel
 {
-    QGuiApplication app(argc, argv);
+    Q_OBJECT
+public:
+    explicit BlogModel(QObject *parent = 0){}
 
-    BloggerProxyModel model;
+protected:
+    QHash<int, QByteArray> roleNames() const
+    {
+        QHash<int, QByteArray> roles;
+        roles[Qt::DisplayRole] = "name";
+        roles[Qt::UserRole + 1] = "url";
+        roles[Qt::UserRole + 2] = "rating";
+        roles[Qt::UserRole + 3] = "lastdate";
+        roles[Qt::UserRole + 4] = "nextdate";
+        return roles;
+    }
+};
 
-    QtQuick2ApplicationViewer viewer;
-    viewer.rootContext()->setContextProperty("blogsModel", &model);
 
-    viewer.setMainQmlFile(QStringLiteral("qml/blogerQML/main.qml"));
-    viewer.showExpanded();
+class BloggerProxyModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+public:
+    explicit BloggerProxyModel(QObject *parent = 0);
 
+    Q_INVOKABLE void search(const QString &text);
 
-    return app.exec();
-}
+    void addBlog(QString name, QString url, int rating, QDate lastDate, QDate nextDate);
+
+signals:
+
+public slots:
+    void dataChanged(QModelIndex,QModelIndex);
+
+private:
+    BlogModel *m_model;
+};
+
+#endif // BLOGGERMODEL_H

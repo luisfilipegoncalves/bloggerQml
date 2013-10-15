@@ -13,7 +13,9 @@ QML_IMPORT_PATH =
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    BloggerModel.cpp
+    BloggerLoader.cpp \
+    BloggerProxyModel.cpp \
+    BlogModel.cpp
 
 # Installation path
 # target.path =
@@ -23,7 +25,9 @@ include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
 qtcAddDeployment()
 
 HEADERS += \
-    BloggerModel.h
+    BloggerLoader.h \
+    BloggerProxyModel.h \
+    BlogModel.h
 
 RESOURCES += \
     assets.qrc

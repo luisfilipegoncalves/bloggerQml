@@ -29,7 +29,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
 
             TextInput {
-                id: txed
+                id: blogNameText
                 anchors.left: parent.left
                 anchors.leftMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
@@ -45,9 +45,9 @@ Rectangle {
             }
 
             Row {
-                anchors.left: txed.right
+                anchors.left: blogNameText.right
                 anchors.leftMargin: 30
-                anchors.verticalCenter: txed.verticalCenter
+                anchors.verticalCenter: blogNameText.verticalCenter
                 Repeater {
                     model: rating
                     StarRating {}
@@ -56,9 +56,9 @@ Rectangle {
 
             Row {
                 id: starRow
-                anchors.left: txed.right
+                anchors.left: blogNameText.right
                 anchors.leftMargin: 30
-                anchors.verticalCenter: txed.verticalCenter
+                anchors.verticalCenter: blogNameText.verticalCenter
 
                 StarButton {
                     starIndex: 1
@@ -78,42 +78,45 @@ Rectangle {
 
             }
 
-            Text {
-                id: date
+            Date {
+                id: lastDateItem
+                labelStr: "Última: "
+                dateStr: lastdate
+
                 anchors.left: starRow.right
                 anchors.leftMargin:  30
-                anchors.verticalCenter: txed.verticalCenter
+                anchors.verticalCenter: blogNameText.verticalCenter
 
-                text: "Última: " + lastdate
-                font.pixelSize: 14
-                font.bold: true
-                color: "white"
+                onDateStrChanged: {
+                    //console.log("dateStr: " + dateStr)
+                    lastdate = dateStr
+                }
             }
 
-            Text {
-                id: textNextDate
-                anchors.left: date.right
+            Date {
+                id: nextDateItem
+                labelStr: "Próxima: "
+                dateStr: nextdate
+
+                anchors.left: lastDateItem.right
                 anchors.leftMargin: 30
-                anchors.verticalCenter: txed.verticalCenter
+                anchors.verticalCenter: lastDateItem.verticalCenter
 
-                text: "Próxima: " + nextdate
-                font.pixelSize: 14
-                font.bold: true
-                color: "white"
+                onDateStrChanged: {
+                    //console.log("dateStr: " + dateStr)
+                    nextdate = dateStr
+                }
             }
 
-            TextInput {
+            Note {
                 id: txtNote
-                anchors.left: date.left
-                anchors.leftMargin: 20
-                anchors.top: date.bottom
-                anchors.topMargin: 20
-                text: "Notas: Este blog é marado!"
-                color: "black"
-                font.pixelSize: 12
-                font.bold: false
-            }
+                anchors.left: lastDateItem.left
+                anchors.top: lastDateItem.bottom
+                anchors.topMargin: 10
+                noteStr: note
 
+                onNoteStrChanged: note = noteStr
+            }
 
             TextInput {
                 id: txtUrl
@@ -185,5 +188,49 @@ Rectangle {
 
         }
 
+
+        Image {
+            id: rectAddNewBlog
+            source: "qrc:/assets/addNew.png"
+            width: 50
+            height: 50
+            fillMode: Image.PreserveAspectFit
+            anchors.left: searchRect.right
+            anchors.leftMargin: 40
+            anchors.verticalCenter: searchRect.verticalCenter
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    newBlogItem.state = "shown"
+                }
+            }
+        }
+
+    }
+
+
+    NewBlogItem {
+        id: newBlogItem
+        width: parent.width
+        height: 200
+        color: "black"
+        opacity: 0.9
+        anchors.bottom: parent.top
+
+        states: State {
+            name: "shown"
+            PropertyChanges {
+                target: newBlogItem
+                anchors.bottomMargin: -200
+            }
+        }
+
+        transitions: [
+            Transition {
+                NumberAnimation { target: newBlogItem; property: "anchors.bottomMargin"; duration: 500; easing.type: Easing.InCubic }
+
+            }
+        ]
     }
 }

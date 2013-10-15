@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>assets/lupa.png</file>
         <file>assets/star.png</file>
+        <file>assets/addNew.png</file>
+        <file>assets/close.png</file>
     </qresource>
 </RCC>

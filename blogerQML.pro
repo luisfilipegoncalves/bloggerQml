@@ -15,7 +15,8 @@ QML_IMPORT_PATH =
 SOURCES += main.cpp \
     BloggerLoader.cpp \
     BloggerProxyModel.cpp \
-    BlogModel.cpp
+    BlogModel.cpp \
+    Helper.cpp
 
 # Installation path
 # target.path =
@@ -27,7 +28,8 @@ qtcAddDeployment()
 HEADERS += \
     BloggerLoader.h \
     BloggerProxyModel.h \
-    BlogModel.h
+    BlogModel.h \
+    Helper.h
 
 RESOURCES += \
     assets.qrc

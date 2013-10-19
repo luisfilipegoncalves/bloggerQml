@@ -3,6 +3,8 @@
 
 #include "BloggerProxyModel.h"
 #include "BloggerLoader.h"
+#include "Helper.h"
+
 #include <QQmlContext>
 
 int main(int argc, char *argv[])
@@ -15,8 +17,10 @@ int main(int argc, char *argv[])
     BloggerProxyModel model;
     model.setSourceModel(loader.model());
 
+    Helper helper;
     QtQuick2ApplicationViewer viewer;
     viewer.rootContext()->setContextProperty("blogsModel", &model);
+    viewer.rootContext()->setContextProperty("helper", &helper);
 
     viewer.setMainQmlFile(QStringLiteral("qml/blogerQML/main.qml"));
     viewer.showExpanded();

@@ -50,6 +50,17 @@ void BloggerProxyModel::search(const QString &text)
     setFilterWildcard(text);
 }
 
+bool BloggerProxyModel::tryAddBlog(QString name, QString url, int rating, QString lastDate, QString nextDate, QString note)
+{
+    qDebug() << "try to add new blog...";
+    qDebug() << "name: " << name;
+    qDebug() << "url: " << url;
+    qDebug() << "rating: " << rating;
+    qDebug() << "lastDate: " << lastDate;
+    qDebug() << "nextDate: " << nextDate;
+    qDebug() << "note: " << note;
+}
+
 
 
 void BloggerProxyModel::dataChanged(QModelIndex i1, QModelIndex i2)

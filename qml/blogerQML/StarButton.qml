@@ -6,8 +6,7 @@ Rectangle {
     color: "transparent"
     opacity: 0.1
     property int starIndex: 0
-
-
+    signal selected
     Image {
         id: name
         anchors.fill: parent
@@ -18,8 +17,8 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            rating = starIndex
+            selected()
+            //rating = starIndex
         }
     }
-
 }

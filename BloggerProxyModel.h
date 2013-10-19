@@ -15,7 +15,7 @@ public:
     explicit BloggerProxyModel(QObject *parent = 0);
 
     Q_INVOKABLE void search(const QString &text);
-
+    Q_INVOKABLE bool tryAddBlog(QString name, QString url, int rating, QString lastDate, QString nextDate, QString note);
 
 signals:
 

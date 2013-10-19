@@ -40,42 +40,17 @@ Rectangle {
                 font.bold: true
                 maximumLength: 60
                 onTextChanged: {
-                    name = text
+                    name = text // change the model data
                 }
             }
 
-            Row {
-                anchors.left: blogNameText.right
-                anchors.leftMargin: 30
-                anchors.verticalCenter: blogNameText.verticalCenter
-                Repeater {
-                    model: rating
-                    StarRating {}
-                }
-            }
-
-            Row {
+            Stars {
                 id: starRow
+                ratingValue: rating
                 anchors.left: blogNameText.right
                 anchors.leftMargin: 30
                 anchors.verticalCenter: blogNameText.verticalCenter
-
-                StarButton {
-                    starIndex: 1
-                }
-                StarButton {
-                    starIndex: 2
-                }
-                StarButton {
-                    starIndex: 3
-                }
-                StarButton {
-                    starIndex: 4
-                }
-                StarButton {
-                    starIndex: 5
-                }
-
+                onRatingChanged: rating = ratingValue // change the model data
             }
 
             Date {
@@ -89,7 +64,7 @@ Rectangle {
 
                 onDateStrChanged: {
                     //console.log("dateStr: " + dateStr)
-                    lastdate = dateStr
+                    lastdate = dateStr // change the model data
                 }
             }
 
@@ -192,8 +167,8 @@ Rectangle {
         Image {
             id: rectAddNewBlog
             source: "qrc:/assets/addNew.png"
-            width: 50
-            height: 50
+            width: 40
+            height: 40
             fillMode: Image.PreserveAspectFit
             anchors.left: searchRect.right
             anchors.leftMargin: 40
@@ -213,16 +188,17 @@ Rectangle {
     NewBlogItem {
         id: newBlogItem
         width: parent.width
-        height: 200
+        height: 300
         color: "black"
         opacity: 0.9
         anchors.bottom: parent.top
+
 
         states: State {
             name: "shown"
             PropertyChanges {
                 target: newBlogItem
-                anchors.bottomMargin: -200
+                anchors.bottomMargin: -newBlogItem.height
             }
         }
 

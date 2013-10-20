@@ -33,3 +33,6 @@ HEADERS += \
 
 RESOURCES += \
     assets.qrc
+
+OTHER_FILES += \
+    MainStatusBar.qml

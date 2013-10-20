@@ -10,7 +10,7 @@ class BlogModel : public QStandardItemModel
 public:
     explicit BlogModel(QObject *parent = 0);
 
-    void addBlog(QString name, QString url, int rating, QString lastDate, QString nextDate, QString note);
+    void addBlog(QString name, QString url, int rating, QString lastDate, QString nextDate, QString note, QString blogId);
 
 protected:
     QHash<int, QByteArray> roleNames() const;

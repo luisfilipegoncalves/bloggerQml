@@ -4,5 +4,13 @@
         <file>assets/star.png</file>
         <file>assets/addNew.png</file>
         <file>assets/close.png</file>
+        <file>assets/badge_close_64.png</file>
+        <file>assets/badge_plus_64.png</file>
+        <file>assets/badge_plus_512.png</file>
+        <file>assets/comment_128.png</file>
+        <file>assets/floppy_disk_128.png</file>
+        <file>assets/globe_128.png</file>
+        <file>assets/trash_128.png</file>
+        <file>assets/badge_cancel_512.png</file>
     </qresource>
 </RCC>

@@ -12,14 +12,12 @@ Row {
         font.bold: false
     }
 
-    TextInput {
+    TextInputBlogDelegate {
         id: note
         text: noteStr
-
-        color: "black"
         font.pixelSize: 12
         font.bold: false
-
+        width: 200
         onTextChanged: noteStr = text;
     }
 

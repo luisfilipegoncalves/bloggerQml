@@ -12,7 +12,6 @@ Rectangle {
         urlInputRow.clear()
         noteInputRow.clear()
         lastDatePicker.clear()
-        nextDatePicker.clear()
     }
 
     MouseArea {
@@ -20,7 +19,7 @@ Rectangle {
         preventStealing: true
     }
 
-    Text{
+    Text {
         id: title
         anchors.top: parent.top
         anchors.left: parent.left
@@ -117,33 +116,12 @@ Rectangle {
         }
     }
 
-    Row {
-        id: nextDateRow
-        spacing: 20
-        anchors.left: lastDateRow.right
-        anchors.leftMargin:  20
-        anchors.top: lastDateRow.top
-
-        Text {
-            text: qsTr("Próxima data: ")
-            color: "white"
-            anchors.verticalCenter: parent.verticalCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 14
-            font.bold: true
-            width: labelsWidth
-        }
-        DatePicker {
-            id: nextDatePicker
-        }
-    }
-
     Image
     {
         id: closeButton
-        width: 40
-        height: 40
-        source: "qrc:/assets/close.png"
+        width: 30
+        height: 30
+        source: "qrc:/assets/badge_close_64.png"
         fillMode: Image.PreserveAspectFit
         anchors.right: parent.right
         anchors.rightMargin: 20
@@ -183,7 +161,8 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                blogsModel.tryAddBlog(nameInputRow.textValue, urlInputRow.textValue, stars.ratingValue, lastDatePicker.textValue, nextDatePicker.textValue, noteInputRow.textValue)
+                blogsModel.tryAddBlog(nameInputRow.textValue, urlInputRow.textValue, stars.ratingValue,
+                                      lastDatePicker.textValue, noteInputRow.textValue)
                 console.log("add blog!")
             }
         }

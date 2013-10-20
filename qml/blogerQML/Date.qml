@@ -4,23 +4,22 @@ Row {
     id: row
     property string labelStr
     property string dateStr
+    property bool editingEnabled: true
 
     Text {
         id: dateLabel
         text: labelStr
         font.pixelSize: 14
         font.bold: true
-        color: "white"
+        color: "black"
     }
 
-    TextInput {
+    TextInputBlogDelegate  {
+        enabled: editingEnabled
         id: date
         text: dateStr
-        font.pixelSize: 14
-        font.bold: true
-        color: "white"
         onTextChanged: dateStr = text;
-        //onActiveFocusChanged: console.log("focus: " + focus.toString())
+        width: 100
     }
 
 }

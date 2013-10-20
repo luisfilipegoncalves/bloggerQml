@@ -14,9 +14,14 @@ public:
     bool loadBlogsFromFile();
     QStandardItemModel *model();
 
+    static QDate nextDate(QDate lastDate, int rating);
+    static QString ratingColor(int rating);
+
 signals:
 
 public slots:
+
+
 
 private:
     BlogModel *m_model;

@@ -6,8 +6,6 @@
 #include <QStandardItem>
 #include <QDate>
 
-
-
 class BloggerProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
@@ -17,17 +15,13 @@ public:
     Q_INVOKABLE void search(const QString &text);
     Q_INVOKABLE bool tryAddBlog(QString name, QString url, int rating, QString lastDate, QString note);
 
-    Q_INVOKABLE bool saveDB();
+    Q_INVOKABLE bool deleteBlog(int row);
 
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 signals:
+    void sizeChanged(int);
 
-public slots:
-    void dataChanged(QModelIndex,QModelIndex);
-
-private:
-    //BlogModel *m_model;
 };
 
 #endif // BLOGGERPROXYMODEL_H

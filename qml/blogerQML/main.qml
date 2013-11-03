@@ -7,6 +7,11 @@ Rectangle {
     height: 900
     color: "white"
 
+    property int blogsSize: 0
+
+
+
+
     ListView {
         id: listV
         opacity: 0.6
@@ -25,6 +30,7 @@ Rectangle {
             height: 100
             color: "lightgray"
         }
+
 
         delegate: Rectangle {
             id: del
@@ -46,6 +52,20 @@ Rectangle {
                 }
             }
 
+            Rectangle {
+                rotation: 90
+                transformOrigin: Item.TopLeft
+                x: 20
+                height: 20
+                width: parent.height
+                opacity: 0.7
+                gradient: Gradient {
+                    GradientStop { position: 1.0; color: ratingColor }
+                    GradientStop { position: 0.0; color: "white" }
+                }
+            }
+
+
             TextInputBlogDelegate {
                 id: blogNameText
                 anchors.left: parent.left
@@ -59,6 +79,7 @@ Rectangle {
                     name = text // change the model data
                 }
             }
+
 
             Stars {
                 id: starRow
@@ -82,20 +103,33 @@ Rectangle {
                 anchors.leftMargin:  30
                 anchors.verticalCenter: blogNameText.verticalCenter
 
-
                 onDateStrChanged: {
                     lastdate = dateStr // change the model data
                 }
             }
 
-            Date {
+            Row {
                 id: nextDateItem
-                labelStr: "Próxima: "
-                dateStr: nextdate
                 anchors.left: lastDateItem.right
                 anchors.leftMargin: 30
                 anchors.verticalCenter: lastDateItem.verticalCenter
-                editingEnabled: false
+
+                Text {
+                    id: dateLabel
+                    text: qsTr("Próxima: ")
+                    font.pixelSize: 14
+                    font.bold: true
+                    color: "black"
+                }
+
+                Text {
+                    enabled: false
+                    text: nextdate
+                    width: 100
+                    font.pixelSize: 14
+                    font.bold: true
+                    color: "black"
+                }
             }
 
             Image {
@@ -141,17 +175,13 @@ Rectangle {
                 color: "black"
                 font.pixelSize: 12
                 width: 300
+                clip: true
                 onTextChanged: {
                     url = text
                 }
             }
 
-            Rectangle {
-                width: 5
-                height: parent.height
-                anchors.bottom: parent.bottom
-                color: ratingColor
-            }
+
 
         }
     }
@@ -239,6 +269,9 @@ Rectangle {
                     id: mouseDeleteBlog
                     anchors.fill: parent
                     onClicked: {
+                        console.log("delete blog button clicked...")
+                        console.log("listV.currentIndex: " + listV.currentIndex)
+                        blogsModel.deleteBlog(listV.currentIndex)
                     }
                 }
             }
@@ -256,13 +289,31 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         console.log("Save database...")
-                        if(blogsModel.saveDB())
+                        if(bloggerloader.saveDB())
                             mainStatusBar.showMessage("Base de dados guardada com succeso.", "white")
                         else
                             mainStatusBar.showMessage("Erro a guardar base de dados.", "red")
                     }
                 }
             }
+        }
+
+        Text {
+            id: numBlogsLabel
+            text: qsTr("Número de blogs: ") + bloggerloader.numTotalBlogs()
+            font.bold: true
+            font.pixelSize: 15
+            color: "black"
+            anchors.right: parent.right
+            anchors.rightMargin: 30
+            anchors.verticalCenter: parent.verticalCenter
+
+            Connections {
+                  target: bloggerloader
+                  onUpdateNumRows: {
+                     numBlogsLabel.text = qsTr("Número de blogs: ") + bloggerloader.numTotalBlogs()
+                  }
+              }
         }
 
     }

@@ -9,7 +9,6 @@
 BloggerProxyModel::BloggerProxyModel(QObject *parent) :
     QSortFilterProxyModel(parent)
 {
-    connect(this, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
 }
 
 void BloggerProxyModel::search(const QString &text)
@@ -33,20 +32,22 @@ bool BloggerProxyModel::tryAddBlog(QString name, QString url, int rating, QStrin
     QDate lastDate = QDate::fromString(lastDateStr, "dd-MM-yyyy");
     QDate nextdate;
     if(!lastDate.isNull())
-    {
         nextdate = BloggerLoader::nextDate(lastDate, rating);
-    }
 
     QString id = QUuid::createUuid().toString();
 
     model->addBlog(name, url, rating, lastDateStr, nextdate.toString("dd-MM-yyyy"), note, id);
-
     return true;
 }
 
-bool BloggerProxyModel::saveDB()
+bool BloggerProxyModel::deleteBlog(int row)
 {
-    return true;
+    qDebug() << "Delete blog wor: " << row;
+    QModelIndex sourceIndex = mapToSource(index(row, 0));
+    qDebug() << "Delete blog source index: " << sourceIndex;
+    bool deleted = sourceModel()->removeRow(sourceIndex.row());
+    qDebug() << "Deleted ? " << deleted;
+    return deleted;
 }
 
 bool BloggerProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
@@ -61,9 +62,4 @@ bool BloggerProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sour
         return true;
 
     return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
-}
-
-void BloggerProxyModel::dataChanged(QModelIndex i1, QModelIndex i2)
-{
-    qDebug() << "Data changed... " << i1 << i2;
 }

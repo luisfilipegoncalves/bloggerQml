@@ -8,10 +8,65 @@
 #include <QJsonObject>
 
 BloggerLoader::BloggerLoader(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_model(new BlogModel(this))
 {
-    m_model = new BlogModel(this);
+    connect(m_model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsChanged()));
+    connect(m_model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(rowsChanged()));
+}
 
+int BloggerLoader::numTotalBlogs()
+{
+    return m_model->rowCount();
+}
+
+void BloggerLoader::rowsChanged()
+{
+    emit updateNumRows();
+}
+
+bool BloggerLoader::saveDB()
+{
+    qDebug() << "Save db";
+    int rowCount = m_model->rowCount();
+    if(rowCount==0)
+        return false;
+
+    QVariantMap docMap;
+    for(int i=0; i<rowCount; ++i)
+    {
+        QVariantMap currentBlogMap;
+        QModelIndex index = m_model->index(i, 0);
+        QString name = index.data().toString();
+        QString url = index.data(Qt::UserRole +1).toString();
+        int rating = index.data(Qt::UserRole +2).toInt();
+        QString lastDate = index.data(Qt::UserRole +3).toString();
+        QString note = index.data(Qt::UserRole +5).toString();
+        QString blogId = index.data(Qt::UserRole +7).toString();
+
+        currentBlogMap.insert("name", name);
+        currentBlogMap.insert("url", url);
+        currentBlogMap.insert("rating", rating);
+        currentBlogMap.insert("lastDate", lastDate);
+        currentBlogMap.insert("comments", note);
+        currentBlogMap.insert("id", blogId);
+
+        docMap.insert(blogId, currentBlogMap);
+    }
+
+    QJsonObject jsonObj = QJsonObject::fromVariantMap(docMap);
+    QJsonDocument jsonDoc(jsonObj);
+
+    QFile saveDocFile("blogsSaved.json");
+    if(!saveDocFile.open(QIODevice::WriteOnly))
+    {
+        qDebug() << "Error opening file. Error: "<< saveDocFile.errorString();
+        return false;
+    }
+
+    QTextStream textStream(&saveDocFile);
+    textStream << jsonDoc.toJson(QJsonDocument::Indented);
+    return true;
 }
 
 bool BloggerLoader::loadBlogsFromFile()
@@ -44,7 +99,12 @@ bool BloggerLoader::loadBlogsFromFile()
         QVariantMap blogMap = obj.value(key).toObject().toVariantMap();
         int rating = blogMap.value("rating").toInt();
         QString lastDateStr = blogMap.value("lastDate").toString();
-        QDate lastDate = QDate::fromString(lastDateStr, "yyyy-MM-dd");
+
+        // maintain compatibility with former settings
+        QDate lastDate = QDate::fromString(lastDateStr, "yyyy-MM-dd"); // 1st version of dates
+        if(lastDate.isNull())
+            lastDate = QDate::fromString(lastDateStr, "dd-MM-yyyy"); // 2nd version of dates
+
         QDate nextDate = BloggerLoader::nextDate(lastDate, rating);
         m_model->addBlog(blogMap.value("name").toString(),
                          blogMap.value("url").toString(),
@@ -55,12 +115,10 @@ bool BloggerLoader::loadBlogsFromFile()
                          blogMap.value("id").toString()
                          );
     }
-
     return true;
-
 }
 
-QStandardItemModel *  BloggerLoader::model()
+QStandardItemModel * BloggerLoader::model()
 {
     return m_model;
 }
@@ -104,7 +162,7 @@ QString BloggerLoader::ratingColor(int rating)
     case 3: // monthly
         return "green";
     case 4: // bimonthly
-        return "orange";
+        return "cyan";
     case 5: // weekly
         return "blue";
     default:

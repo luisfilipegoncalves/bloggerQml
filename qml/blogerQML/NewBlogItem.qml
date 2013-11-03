@@ -161,9 +161,13 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                blogsModel.tryAddBlog(nameInputRow.textValue, urlInputRow.textValue, stars.ratingValue,
-                                      lastDatePicker.textValue, noteInputRow.textValue)
-                console.log("add blog!")
+                if(blogsModel.tryAddBlog(nameInputRow.textValue, urlInputRow.textValue, stars.ratingValue,
+                                         lastDatePicker.textValue, noteInputRow.textValue))
+                {
+                    console.log("add blog!")
+                    root.state = ""
+                    clear()
+                }
             }
         }
     }

@@ -1,3 +1,5 @@
+QT += widgets
+
 # Add more folders to ship with the application, here
 folder_01.source = qml/blogerQML
 folder_01.target = qml

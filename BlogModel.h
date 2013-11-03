@@ -12,6 +12,11 @@ public:
 
     void addBlog(QString name, QString url, int rating, QString lastDate, QString nextDate, QString note, QString blogId);
 
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+
+private slots:
+    void modelDataChanged(QModelIndex,QModelIndex);
+
 protected:
     QHash<int, QByteArray> roleNames() const;
 

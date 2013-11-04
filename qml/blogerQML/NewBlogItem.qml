@@ -69,6 +69,7 @@ Rectangle {
         Stars {
             id: stars
             ratingValue: 0
+
         }
     }
 

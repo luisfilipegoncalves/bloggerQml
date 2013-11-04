@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Item {
+Rectangle {
     width: rowButton.width
     height: rowButton.height
     property int ratingValue: 0

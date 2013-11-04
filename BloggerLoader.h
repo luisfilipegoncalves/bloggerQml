@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QStandardItemModel>
+#include <QDir>
 
 class BlogModel;
 class BloggerLoader : public QObject
@@ -28,9 +29,12 @@ public slots:
 private slots:
     void rowsChanged();
 
+protected:
+    bool backupLastDBFile();
 
 private:
     BlogModel *m_model;
+    QDir tempDir;
 };
 
 #endif // BLOGGERLOADER_H

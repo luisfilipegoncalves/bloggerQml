@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
     viewer.setMainQmlFile(QStringLiteral("qml/blogerQML/main.qml"));
     viewer.showExpanded();
 
-
-    return app.exec();
+    int res = app.exec();
+    bloggerloader.saveDB();
+    return res;
 }

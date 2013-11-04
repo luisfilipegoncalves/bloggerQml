@@ -3,9 +3,11 @@
 
 #include <QDir>
 #include <QCoreApplication>
+#include <QApplication>
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDateTime>
 
 BloggerLoader::BloggerLoader(QObject *parent) :
     QObject(parent),
@@ -13,6 +15,9 @@ BloggerLoader::BloggerLoader(QObject *parent) :
 {
     connect(m_model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsChanged()));
     connect(m_model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(rowsChanged()));
+
+    tempDir.mkdir("Temp");
+    tempDir.cd("Temp");
 }
 
 int BloggerLoader::numTotalBlogs()
@@ -25,9 +30,25 @@ void BloggerLoader::rowsChanged()
     emit updateNumRows();
 }
 
+bool BloggerLoader::backupLastDBFile()
+{
+    qDebug() << "backup lastDBFile";
+    QDir appDir = QDir::currentPath();
+    QFile blogsFile(appDir.absoluteFilePath("blogs.json"));
+    QString tempFileName("blogs%1.json");
+    if(blogsFile.exists())
+    {
+        QString str(tempDir.absoluteFilePath(tempFileName.arg(QDateTime::currentDateTime().toString("yyyyMMdd_hh-mm-ss-zzz"))));
+        blogsFile.copy(str);
+        blogsFile.remove();
+    }
+}
+
 bool BloggerLoader::saveDB()
 {
     qDebug() << "Save db";
+    backupLastDBFile();
+
     int rowCount = m_model->rowCount();
     if(rowCount==0)
         return false;
@@ -54,10 +75,13 @@ bool BloggerLoader::saveDB()
         docMap.insert(blogId, currentBlogMap);
     }
 
+
+
     QJsonObject jsonObj = QJsonObject::fromVariantMap(docMap);
     QJsonDocument jsonDoc(jsonObj);
 
-    QFile saveDocFile("blogsSaved.json");
+    QDir appDir = QDir::currentPath();
+    QFile saveDocFile(appDir.absoluteFilePath("blogs.json"));
     if(!saveDocFile.open(QIODevice::WriteOnly))
     {
         qDebug() << "Error opening file. Error: "<< saveDocFile.errorString();

@@ -9,7 +9,10 @@ Rectangle {
 
     property int blogsSize: 0
 
-
+    function bla()
+    {
+        console.log("bla")
+    }
 
 
     ListView {
@@ -45,6 +48,7 @@ Rectangle {
             {
                 listV.currentIndex = index
             }
+
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
@@ -271,7 +275,8 @@ Rectangle {
                     onClicked: {
                         console.log("delete blog button clicked...")
                         console.log("listV.currentIndex: " + listV.currentIndex)
-                        blogsModel.deleteBlog(listV.currentIndex)
+                        confirmDialog.visible = true
+                        //blogsModel.deleteBlog(listV.currentIndex)
                     }
                 }
             }
@@ -351,5 +356,11 @@ Rectangle {
         anchors.bottomMargin: -height
         width: parent.width
         height: 40
+    }
+
+    ConfirmAction {
+        id: confirmDialog
+        anchors.fill: parent
+        visible: false
     }
 }

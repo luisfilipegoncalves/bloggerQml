@@ -40,14 +40,18 @@ bool BloggerProxyModel::tryAddBlog(QString name, QString url, int rating, QStrin
     return true;
 }
 
-bool BloggerProxyModel::deleteBlog(int row)
+QString BloggerProxyModel::deleteBlog(int row)
 {
-    qDebug() << "Delete blog wor: " << row;
+    qDebug() << "Delete blog row: " << row;
     QModelIndex sourceIndex = mapToSource(index(row, 0));
-    qDebug() << "Delete blog source index: " << sourceIndex;
+    QString name = sourceIndex.data(Qt::DisplayRole).toString();
+    qDebug() << "Delete blog source index: " << sourceIndex << name;
     bool deleted = sourceModel()->removeRow(sourceIndex.row());
     qDebug() << "Deleted ? " << deleted;
-    return deleted;
+    if(deleted)
+        return name;
+    else
+        return QString(); // false or failled to remove
 }
 
 bool BloggerProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const

@@ -15,7 +15,7 @@ public:
     Q_INVOKABLE void search(const QString &text);
     Q_INVOKABLE bool tryAddBlog(QString name, QString url, int rating, QString lastDate, QString note);
 
-    Q_INVOKABLE bool deleteBlog(int row);
+    Q_INVOKABLE QString deleteBlog(int row);
 
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
